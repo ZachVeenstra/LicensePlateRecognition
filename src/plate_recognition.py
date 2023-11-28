@@ -1,10 +1,10 @@
-
 import easyocr
 import matplotlib.pyplot as plt
 import numpy as np
 from urllib.request import urlopen
 import csv
 import cv2
+
 
 CSV_PATH = './data/license_plates.csv'
 STATE_INDEX = 0
@@ -13,6 +13,8 @@ PLATE_IMAGE_LINK_INDEX = 2
 
 
 def main():
+    total_plates = 0
+    num_plates_correctly_identified = 0
     with open(CSV_PATH) as license_plates_csv:
         csv_reader = csv.reader(license_plates_csv)
         for row in csv_reader:
@@ -21,15 +23,29 @@ def main():
                 continue
 
             try:
-                image = getImage(row)
+                license_plate = getImage(row)
             except Exception:
                 continue
 
+            state = row[STATE_INDEX]
 
-            plt.imshow(image)
-            plt.show()
+            character_reader = easyocr.Reader(['en'], gpu=False) # Note: if you have a GPU, set this to True!
 
-            break
+            text = character_reader.readtext(license_plate)
+            
+            # TODO: Read the state in a better way than just getting a certain element from the text.
+            state_read = text[0][1]
+            
+            # TODO: Create table with state spelling equivilencies. Ex: California - CA, CAL, CALIFORNIA
+
+            total_plates += 1
+            if state == state_read:
+                print(f"{state_read} == {state}")
+                num_plates_correctly_identified += 1
+            else:
+                print(f"{state_read} != {state}")
+    
+    print(f"Percentage correct = {num_plates_correctly_identified / total_plates}")
 
 
 def getImage(row):
