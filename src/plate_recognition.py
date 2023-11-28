@@ -13,6 +13,10 @@ PLATE_IMAGE_LINK_INDEX = 2
 
 
 def main():
+    """
+    Go through each license plate in the CSV and read the text from the
+    image, calculating the number of which were correctly identified.
+    """
     total_plates = 0
     num_plates_correctly_identified = 0
     with open(CSV_PATH) as license_plates_csv:
