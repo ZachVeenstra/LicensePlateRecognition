@@ -119,6 +119,17 @@ def main():
 
             total_plates += 1
             isLooping = True
+            abc = 1
+            for x in range(len(text)):
+                topleft = text[x][0][0]
+                bottomright = text[x][0][2]
+                if 6 <= topleft[0] and 19 <= topleft[1]:
+                    if bottomright[0] <= 224 and bottomright[1] <= 111:
+                        print("License plate is:", text[x][1])
+                        abc = 0
+                        break
+            if abc == 1:
+                print("Failed to find license plate #")
             for x in range(len(text)):
                 word = text[x][1]
                 for i, sublist in enumerate(words):
