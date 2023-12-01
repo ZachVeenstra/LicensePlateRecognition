@@ -110,12 +110,13 @@ def main():
                     for equivalence in sublist:
                         if equivalence.lower() in word.lower():
                             print(f"{word} contained {equivalence}")
-                            if stateId == i:
+                            if int(stateId) == i:
+                                print("Correctly Identified: " + str(num_plates_correctly_identified))
                                 num_plates_correctly_identified += 1
                             isLooping = False
                             break
-                        else:
-                            print(f"{word} didn't contain {equivalence}")
+                        """else:
+                            print(f"{word} didn't contain {equivalence}")"""
                     if not isLooping:
                         break
                 if not isLooping:
