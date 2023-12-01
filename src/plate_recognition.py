@@ -17,59 +17,59 @@ STATE_ID_INDEX = 0
 def main():
     words = [
         ["Alabama", "Bama"],
-        ["Alaska", "AK"],
+        ["Alaska", "Alas"],
         ["American Samoa", "Samoa"],
-        ["Arizona", "AZ", "Ariz"],
+        ["Arizona", "Ariz"],
         ["Arkansas", "Ark"],
         ["California", "Calif", "Cali", "Cal"],
         ["CNMI", "Saipan", "Mariana", "Northern Mariana", "Pacific", "NorthernMariana"],
         ["Colorado", "Colo", "Color"],
-        ["Connecticut", "CT", "Conn"],
+        ["Connecticut", "Conn"],
         ["Delaware", "Del"],
-        ["Florida", "FL", "Fla"],
+        ["Florida", "Rida" "Fla"],
         ["Georgia", "Peach"],
         ["Guam"],
         ["Hawaii", "Aloha"],
         ["Idaho", "Potato"],
-        ["Illinois", "IL", "Ill"],
+        ["Illinois", "Ill"],
         ["Indiana", "Ind"],
         ["Iowa"],
-        ["Kansas", "KS", "Kan"],
-        ["Kentucky", "KY"],
+        ["Kansas", "Kan"],
+        ["Kentucky", "Tucky"],
         ["Louisiana"],
         ["Maine", "Vacationland", "Vacation"],
-        ["Maryland", "MD"],
+        ["Maryland", "Mary"],
         ["Massachusetts", "Mass"],
         ["Michigan", "Mich", "Pure"],
-        ["Minnesota", "MN", "Minn"],
-        ["Mississippi", "MS"],
-        ["Missouri"],
-        ["Montana", "MT"],
+        ["Minnesota", "Minn", "Sota"],
+        ["Mississippi", "Sippi", "Missi"],
+        ["Missouri", "Souri"],
+        ["Montana"],
         ["Nebraska", "Neb"],
-        ["Nevada", "NV", "Nev"],
-        ["New Hampshire", "NH", "N.H.", "Hampshire", "NewHampshire"],
+        ["Nevada", "Nev"],
+        ["New Hampshire", "NH", "Hampshire", "NewHampshire"],
         ["New Jersey", "NJ", "N.J.", "Jersey", "Garden", "NewJersey"],
-        ["New Mexico", "NM", "N.M.", "Mexico", "Enchantment", "NewMexico"],
-        ["New York", "NY", "N.Y.", "York", "NewYork"],
-        ["North Carolina", "N.C.", "NorthCarolina"],
-        ["North Dakota", "ND", "N.D.", "NorthDakota", "N.Dakota", "NDakota"],
+        ["New Mexico", "Mexico", "Enchantment", "NewMexico"],
+        ["New York", "York", "NewYork"],
+        ["North Carolina", "NorthCarolina"],
+        ["North Dakota","N.Dak", "NDak", "NorthDakota", "N.Dakota", "NDakota"],
         ["Ohio"],
-        ["Oklahoma", "OK", "Okla"],
+        ["Oklahoma","Okla"],
         ["Oregon", "Ore"],
-        ["Pennsylvania", "PA", "Penn", "Penna"],
+        ["Pennsylvania", "Penn", "Penna"],
         ["Puerto Rico", "PuertoRico", "Puerto", "Rico"],
         ["Rhode Island", "R.I.", "RhodeIsland", "Rhode"],
-        ["South Carolina", "SC", "S.C.", "SouthCarolina"],
-        ["South Dakota", "SD", "S.D.", "SouthDakota", "S.Dak", "S.Dakota", "SDak", "SDakota"],
-        ["Tennessee", "TN", "Tenn"],
-        ["Texas", "TX", "Tex"],
-        ["Virgin", "Islands", "VirginIslands"],
+        ["South Carolina", "SouthCarolina"],
+        ["South Dakota","SouthDakota", "S.Dak", "S.Dakota", "SDak", "SDakota"],
+        ["Tennessee", "Tenn"],
+        ["Texas", "Tex"],
+        ["Islands", "VirginIslands"],
         ["Utah"],
-        ["Vermont", "VT"],
+        ["Vermont"],
         ["Virginia"],
-        ["Washington", "WA", "Wash"],
+        ["Washington", "Wash"],
         ["Columbia", "Washington DC", "Washington D.C.", "WashingtonDC", "DC", "D.C"],
-        ["West Virginia", "WV", "W.Va.", "WestVirginia", "West"],
+        ["West Virginia", "WV", "W.Va.", "WestVirginia", "West", "WVA", "W.Va"],
         ["Wisconsin", "Wisc"],
         ["Wyoming", "WY", "Wyo"]
     ]
@@ -81,7 +81,10 @@ def main():
     total_plates = 0
     num_plates_correctly_identified = 0
     num_plates_incorrectly_identified = 0
+    correctly_identified_state = 0
+    incorrectly_identified_state = 0
     num_plates_not_identified = 0
+    prevStateId = 0
     with open(CSV_PATH) as license_plates_csv:
         csv_reader = csv.reader(license_plates_csv)
         for n, row in enumerate(csv_reader):
@@ -94,7 +97,17 @@ def main():
             except Exception:
                 continue
 
+
             stateId = row[STATE_ID_INDEX]
+
+            if int(stateId) > int(prevStateId):
+                print(prevStateName + " Was correctly identified: " + str(correctly_identified_state) + " times")
+                print(prevStateName + " Was misidentified: " + str(incorrectly_identified_state) + " times")
+                correctly_identified_state = 0
+                incorrectly_identified_state = 0
+
+            prevStateName = row[STATE_INDEX]
+            prevStateId = row[STATE_ID_INDEX]
 
             character_reader = easyocr.Reader(['en'], gpu=True)  # Note: if you have a GPU, set this to True!
 
@@ -116,9 +129,11 @@ def main():
                             print("index: " + str(i))
                             if int(stateId) == i:
                                 num_plates_correctly_identified += 1
+                                correctly_identified_state += 1
                                 print("Correctly Identified: " + str(num_plates_correctly_identified))
                             else:
                                 num_plates_incorrectly_identified += 1
+                                incorrectly_identified_state += 1
                                 print("Misidentified: " + str(num_plates_incorrectly_identified))
                             isLooping = False
                             break
@@ -173,4 +188,5 @@ def getImage(row):
 
 if __name__ == "__main__":
     main()
+
 
