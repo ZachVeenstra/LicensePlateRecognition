@@ -1,49 +1,58 @@
-AlabamaList = ["Alabama", "AL", "Ala"]
-AlaskaList = ["Alaska", "AK"]
-ArizonaList = ["Arizona", "AZ", "Ariz"]
-ArkansasList = ["Arkansas", "AR", "Ark"]
-CaliforniaList = ["California", "CA", "Calif", "Cali", "Cal"]
-ColoradoList = ["Colorado", "CO", "Color"]
-ConnecticutList = ["Connecticut", "CT", "Conn"]
-DelawareList = ["Delaware", "DE", "Del"]
-FloridaList = ["Florida", "FL", "Fla"]
-GeorgiaList = ["Georgia", "GA"]
-HawaiiList = ["Hawaii", "HI"]
-IdahoList = ["Idaho", "ID"]
-IllinoisList = ["Illinois", "IL", "Ill"]
-IndianaList = ["Indiana", "IN", "Ind"]
-IowaList = ["Iowa", "IA"]
-KansasList = ["Kansas", "KS", "Kan"]
-KentuckyList = ["Kentucky", "KY"]
-LouisianaList = ["Louisiana", "LA"]
-MaineList = ["Maine", "ME"]
-MarylandList = ["Maryland", "MD"]
-MassachusettsList = ["Massachusetts", "MA", "Mass"]
-MichiganList = ["Michigan", "MI", "Mich"]
-MinnesotaList = ["Minnesota", "MN", "Minn"]
-MississippiList = ["Mississippi", "MS", "Miss"]
-MissouriList = ["Missouri", "MO"]
-MontanaList = ["Montana", "MT", "Mont"]
-NebraskaList = ["Nebraska", "NE", "Neb"]
-NevadaList = ["Nevada", "NV", "Nev"]
-NewHampshireList = ["New Hampshire", "NH", "N.H."]
-NewJerseyList = ["New Jersey", "NJ", "N.J."]
-NewMexicoList = ["New Mexico", "NM", "N.M."]
-NewYorkList = ["New York", "NY", "N.Y."]
-NorthCarolinaList = ["North Carolina", "NC", "N.C."]
-NorthDakotaList = ["North Dakota", "ND", "N.D."]
-OhioList = ["Ohio", "OH"]
-OklahomaList = ["Oklahoma", "OK", "Okla"]
-OregonList = ["Oregon", "OR", "Ore"]
-PennsylvaniaList = ["Pennsylvania", "PA", "Penn"]
-RhodeIslandList = ["Rhode Island", "RI", "R.I."]
-SouthCarolinaList = ["South Carolina", "SC", "S.C."]
-SouthDakotaList = ["South Dakota", "SD", "S.D."]
-TennesseeList = ["Tennessee", "TN", "Tenn"]
-TexasList = ["Texas", "TX", "Tex"]
-UtahList = ["Utah", "UT"]
-VermontList = ["Vermont", "VT"]
-VirginiaList = ["Virginia", "VA"]
-WashingtonList = ["Washington", "WA", "Wash"]
-WestVirginiaList = ["West Virginia", "WV", "W.Va."]
-WyomingList = ["Wyoming", "WY", "Wyo"]
+words = [
+        ["Alabama", "Bama"],
+        ["Alaska", "AK"],
+        ["American Samoa", "Samoa"],
+        ["Arizona", "AZ", "Ariz"],
+        ["Arkansas", "Ark"],
+        ["California", "Calif", "Cali", "Cal"],
+        ["CNMI", "Saipan", "Mariana", "Northern Mariana", "Pacific", "NorthernMariana"],
+        ["Colorado", "Colo", "Color"],
+        ["Connecticut", "CT", "Conn"],
+        ["Delaware", "Del"],
+        ["Florida", "FL", "Fla"],
+        ["Georgia", "Peach"],
+        ["Guam"],
+        ["Hawaii", "Aloha"],
+        ["Idaho", "Potato"],
+        ["Illinois", "IL", "Ill"],
+        ["Indiana", "Ind"],
+        ["Iowa"],
+        ["Kansas", "KS", "Kan"],
+        ["Kentucky", "KY"],
+        ["Louisiana"],
+        ["Maine", "Vacationland", "Vacation"],
+        ["Maryland", "MD"],
+        ["Massachusetts", "Mass"],
+        ["Michigan", "Mich", "Pure"],
+        ["Minnesota", "MN", "Minn"],
+        ["Mississippi", "MS"],
+        ["Missouri"],
+        ["Montana", "MT"],
+        ["Nebraska", "Neb"],
+        ["Nevada", "NV", "Nev"],
+        ["New Hampshire", "NH", "N.H.", "Hampshire", "NewHampshire"],
+        ["New Jersey", "NJ", "N.J.", "Jersey", "Garden", "NewJersey"],
+        ["New Mexico", "NM", "N.M.", "Mexico", "Enchantment", "NewMexico"],
+        ["New York", "NY", "N.Y.", "York", "NewYork"],
+        ["North Carolina", "N.C.", "NorthCarolina"],
+        ["North Dakota", "ND", "N.D.", "NorthDakota", "N.Dakota", "NDakota"],
+        ["Ohio"],
+        ["Oklahoma", "OK", "Okla"],
+        ["Oregon", "Ore"],
+        ["Pennsylvania", "PA", "Penn", "Penna"],
+        ["Puerto Rico", "PuertoRico", "Puerto", "Rico"],
+        ["Rhode Island", "R.I.", "RhodeIsland", "Rhode"],
+        ["South Carolina", "SC", "S.C.", "SouthCarolina"],
+        ["South Dakota", "SD", "S.D.", "SouthDakota", "S.Dak", "S.Dakota", "SDak", "SDakota"],
+        ["Tennessee", "TN", "Tenn"],
+        ["Texas", "TX", "Tex"],
+        ["Virgin", "Islands", "VirginIslands"],
+        ["Utah"],
+        ["Vermont", "VT"],
+        ["Virginia"],
+        ["Washington", "WA", "Wash"],
+        ["Columbia", "Washington DC", "Washington D.C.", "WashingtonDC"],
+        ["West Virginia", "WV", "W.Va.", "WestVirginia"],
+        ["Wisconsin", "Wisc"],
+        ["Wyoming", "WY", "Wyo"]
+    ]
