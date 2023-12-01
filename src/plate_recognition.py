@@ -112,11 +112,14 @@ def main():
                     for equivalence in sublist:
                         if equivalence.lower() in word.lower():
                             print(f"{word} contained {equivalence}")
+                            print("State ID: " + stateId)
+                            print("index: " + str(i))
                             if int(stateId) == i:
-                                #print("Correctly Identified: " + str(num_plates_correctly_identified))
                                 num_plates_correctly_identified += 1
+                                print("Correctly Identified: " + str(num_plates_correctly_identified))
                             else:
                                 num_plates_incorrectly_identified += 1
+                                print("Misidentified: " + str(num_plates_incorrectly_identified))
                             isLooping = False
                             break
                         """else:
@@ -136,10 +139,10 @@ def main():
         print(f"Percentage correct = {num_plates_correctly_identified / total_plates}")
     else:
         print("Failed to read")
-    print(f"Percentage Misidentified = {num_plates_incorrectly_identified / total_plates}")
+    print(f"Percentage misidentified = {num_plates_incorrectly_identified / total_plates}")
 
     num_plates_not_identified = total_plates - num_plates_incorrectly_identified - num_plates_correctly_identified
-    print("Percentage not identified: " + str(num_plates_not_identified))
+    print(f"Percentage not identified = {num_plates_not_identified / total_plates}")
 
 def getImage(row):
     """
@@ -170,3 +173,4 @@ def getImage(row):
 
 if __name__ == "__main__":
     main()
+
