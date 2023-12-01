@@ -80,6 +80,8 @@ def main():
     """
     total_plates = 0
     num_plates_correctly_identified = 0
+    num_plates_incorrectly_identified = 0
+    num_plates_not_identified = 0
     with open(CSV_PATH) as license_plates_csv:
         csv_reader = csv.reader(license_plates_csv)
         for n, row in enumerate(csv_reader):
@@ -111,8 +113,10 @@ def main():
                         if equivalence.lower() in word.lower():
                             print(f"{word} contained {equivalence}")
                             if int(stateId) == i:
-                                print("Correctly Identified: " + str(num_plates_correctly_identified))
+                                #print("Correctly Identified: " + str(num_plates_correctly_identified))
                                 num_plates_correctly_identified += 1
+                            else:
+                                num_plates_incorrectly_identified += 1
                             isLooping = False
                             break
                         """else:
@@ -132,6 +136,10 @@ def main():
         print(f"Percentage correct = {num_plates_correctly_identified / total_plates}")
     else:
         print("Failed to read")
+    print(f"Percentage Misidentified = {num_plates_incorrectly_identified / total_plates}")
+
+    num_plates_not_identified = total_plates - num_plates_incorrectly_identified - num_plates_correctly_identified
+    print("Percentage not identified: " + str(num_plates_not_identified))
 
 def getImage(row):
     """
