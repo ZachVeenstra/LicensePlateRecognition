@@ -28,7 +28,7 @@ def main():
         ["Delaware", "Del"],
         ["Florida", "Rida" "Fla"],
         ["Georgia", "Peach"],
-        ["Guam"],
+        ["Guam", "Guam USA"],
         ["Hawaii", "Aloha"],
         ["Idaho", "Potato"],
         ["Illinois", "Ill"],
