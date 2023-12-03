@@ -83,8 +83,9 @@ def main():
     num_plates_incorrectly_identified = 0
     correctly_identified_state = 0
     incorrectly_identified_state = 0
-    num_plates_not_identified = 0
     prevStateId = 0
+    listofplates = []
+    plates_with_num_identified = 0
     with open(CSV_PATH) as license_plates_csv:
         csv_reader = csv.reader(license_plates_csv)
         for n, row in enumerate(csv_reader):
@@ -96,7 +97,6 @@ def main():
                 license_plate = getImage(row)
             except Exception:
                 continue
-
 
             stateId = row[STATE_ID_INDEX]
 
@@ -125,7 +125,9 @@ def main():
                 bottomright = text[x][0][2]
                 if 6 <= topleft[0] and 19 <= topleft[1]:
                     if bottomright[0] <= 224 and bottomright[1] <= 111:
-                        print("License plate is:", text[x][1])
+                        print("License plate # is:", text[x][1], "Confidence %:", text[x][2])
+                        listofplates.append(text[x][1])
+                        plates_with_num_identified += 1
                         abc = 0
                         break
             if abc == 1:
@@ -162,13 +164,23 @@ def main():
                     print(f"{word} != {state}")"""
 
     if total_plates != 0:
-        print(f"Percentage correct = {num_plates_correctly_identified / total_plates}")
+        print(f"Percentage correct(States) = {num_plates_correctly_identified / total_plates}")
     else:
         print("Failed to read")
-    print(f"Percentage misidentified = {num_plates_incorrectly_identified / total_plates}")
+    print(f"Percentage misidentified(States) = {num_plates_incorrectly_identified / total_plates}")
 
     num_plates_not_identified = total_plates - num_plates_incorrectly_identified - num_plates_correctly_identified
-    print(f"Percentage not identified = {num_plates_not_identified / total_plates}")
+    print(f"Percentage not identified(States) = {num_plates_not_identified / total_plates}")
+    print("-------------------------------")
+    print(f"Percentage licence plate numbers identified(#) = {plates_with_num_identified / total_plates}")
+
+    file_path = "license_plate_numbers_identified.txt"
+
+    with open(file_path, 'w') as file:
+        # Iterate through the list and write each plate to a new line in the file
+        for plate in listofplates:
+            file.write(f"{plate}\n")
+
 
 def getImage(row):
     """
@@ -189,7 +201,7 @@ def getImage(row):
         cv2.imshow('Image', image)
         cv2.waitKey(1)
         cv2.destroyAllWindows()
-    
+
     resp = urlopen(image_link)
     image = np.asarray(bytearray(resp.read()), dtype="uint8")
     image = cv2.imdecode(image, cv2.IMREAD_COLOR)  # The image object
@@ -199,5 +211,4 @@ def getImage(row):
 
 if __name__ == "__main__":
     main()
-
 
