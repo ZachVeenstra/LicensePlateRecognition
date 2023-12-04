@@ -1,5 +1,4 @@
 import easyocr
-from urllib.request import urlopen
 import csv
 import cv2
 import LicensePlateEquvalencies
