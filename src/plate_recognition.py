@@ -1,10 +1,8 @@
 import easyocr
-import matplotlib.pyplot as plt
-import numpy as np
 from urllib.request import urlopen
 import csv
 import cv2
-import re
+import LicensePlateEquvalencies
 
 CSV_PATH = './plates.csv'
 STATE_INDEX = 2
@@ -14,69 +12,13 @@ STATE_ID_INDEX = 0
 
 
 def main():
-    words = [
-        ["Alabama", "Bama"],
-        ["Alaska", "Alas"],
-        ["American Samoa", "Samoa"],
-        ["Arizona", "Ariz"],
-        ["Arkansas", "Ark"],
-        ["California", "Calif", "Cali", "Cal"],
-        ["CNMI", "Saipan", "Mariana", "Northern Mariana", "Pacific", "NorthernMariana"],
-        ["Colorado", "Colo", "Color"],
-        ["Connecticut", "Conn"],
-        ["Delaware", "Del"],
-        ["Florida", "Rida" "Fla"],
-        ["Georgia", "Peach"],
-        ["Guam", "Guam USA"],
-        ["Hawaii", "Aloha"],
-        ["Idaho", "Potato"],
-        ["Illinois", "Ill"],
-        ["Indiana", "Ind"],
-        ["Iowa"],
-        ["Kansas", "Kan"],
-        ["Kentucky", "Tucky"],
-        ["Louisiana"],
-        ["Maine", "Vacationland", "Vacation"],
-        ["Maryland", "Mary"],
-        ["Massachusetts", "Mass"],
-        ["Michigan", "Mich", "Pure"],
-        ["Minnesota", "Minn", "Sota"],
-        ["Mississippi", "Sippi", "Missi"],
-        ["Missouri", "Souri"],
-        ["Montana"],
-        ["Nebraska", "Neb"],
-        ["Nevada", "Nev"],
-        ["New Hampshire", "NH", "Hampshire", "NewHampshire"],
-        ["New Jersey", "NJ", "N.J.", "Jersey", "Garden", "NewJersey"],
-        ["New Mexico", "Mexico", "Enchantment", "NewMexico"],
-        ["New York", "York", "NewYork"],
-        ["North Carolina", "NorthCarolina"],
-        ["North Dakota", "N.Dak", "NDak", "NorthDakota", "N.Dakota", "NDakota"],
-        ["Ohio"],
-        ["Oklahoma", "Okla"],
-        ["Oregon", "Ore"],
-        ["Pennsylvania", "Penn", "Penna"],
-        ["Puerto Rico", "PuertoRico", "Puerto", "Rico"],
-        ["Rhode Island", "R.I.", "RhodeIsland", "Rhode"],
-        ["South Carolina", "SouthCarolina"],
-        ["South Dakota", "SouthDakota", "S.Dak", "S.Dakota", "SDak", "SDakota"],
-        ["Tennessee", "Tenn"],
-        ["Texas", "Tex"],
-        ["Islands", "VirginIslands"],
-        ["Utah"],
-        ["Vermont"],
-        ["Virginia"],
-        ["Washington", "Wash"],
-        ["Columbia", "Washington DC", "Washington D.C.", "WashingtonDC", "DC", "D.C"],
-        ["West Virginia", "WV", "W.Va.", "WestVirginia", "West", "WVA", "W.Va"],
-        ["Wisconsin", "Wisc"],
-        ["Wyoming", "WY", "Wyo"]
-    ]
-
     """
     Go through each license plate in the CSV and read the text from the
     image, calculating the number of which were correctly identified.
     """
+
+    words = LicensePlateEquvalencies.words
+
     # Set variables for statistics
     total_plates = 0
     num_plates_correctly_identified = 0
@@ -90,7 +32,8 @@ def main():
     # Open csv file containing the path to all license plate images
     with open(CSV_PATH) as license_plates_csv:
         csv_reader = csv.reader(license_plates_csv)
-        for n, row in enumerate(csv_reader):
+        for _, row in enumerate(csv_reader):
+
             # Skip the first line, which only contains column titles.
             if csv_reader.line_num == 1:
                 continue
@@ -101,7 +44,6 @@ def main():
             except Exception:
                 continue
 
-            # State ID
             stateId = row[STATE_ID_INDEX]
 
             # Statisitics of the current state
@@ -113,17 +55,18 @@ def main():
 
             prevStateName = row[STATE_INDEX]
             prevStateId = row[STATE_ID_INDEX]
+
             # Read the image and return all text found and sets to the variable 'text'.
             # ([Bounding box coordinates(Top left, Top Right, Bottom Right, Bottom Left)], [Text], [Confidence])
             character_reader = easyocr.Reader(['en'], gpu=True)  # Note: if you have a GPU, set this to True!
             text = character_reader.readtext(license_plate)
             print("Here is the text: ", text)
 
-
             total_plates += 1
             isLooping = True
-            # the variable abc is to check if a license plate # was found.
-            abc = 1
+
+            plateNumberFound = False
+
             # This portion iterates through all text boxes found and attempts to validate if it is a license plate
             # number based on the position of the text.
             for x in range(len(text)):
@@ -137,14 +80,15 @@ def main():
                         print("License plate # is:", text[x][1], "Confidence %:", text[x][2])
                         listofplates.append(text[x][1])
                         plates_with_num_identified += 1
-                        abc = 0
+                        plateNumberFound = True
                         break
-            if abc == 1:
+
+            if plateNumberFound == False:
                 print("Failed to find license plate #")
             
             # This iterates through the text to see if it can identify the proper State.
             for x in range(len(text)):
-                # The text
+                
                 word = text[x][1]
                 for i, sublist in enumerate(words):
                     for equivalence in sublist:
@@ -168,16 +112,6 @@ def main():
                         break
                 if not isLooping:
                     break
-                """
-                # This was the initial state checker w/out equivalencies 
-                # Capitalization does not matter.
-                if state == word.capitalize():
-                    print(f"{word} == {state}")
-                    num_plates_correctly_identified += 1
-                    break
-                else:
-                    print(f"{word} != {state}")
-                """
     
     # Output of data:
     if total_plates != 0:
@@ -207,22 +141,11 @@ def getImage(row):
     image_url = f"{row[PLATE_IMAGE_LINK_INDEX]}"
     image_type = image_url[(image_url.rindex('.') + 1):]
     print(image_url)
-    # We don't support the gif file type for now.
+    # The gif file type isn't supported.
     if image_type.casefold() == 'gif':
         raise TypeError
     image = cv2.imread(image_url)
-    """
-    # Breaks if we try to display image
-    if image is not None:
-        # Display the image (optional)
-        cv2.imshow('Image', image)
-        cv2.waitKey(1)
-        cv2.destroyAllWindows()
 
-    resp = urlopen(image_link)
-    image = np.asarray(bytearray(resp.read()), dtype="uint8")
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)  # The image object
-    """
     return image
 
 
